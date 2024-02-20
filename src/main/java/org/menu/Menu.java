@@ -1,19 +1,45 @@
 package org.menu;
 
+import org.logs.TransactionLog;
+import org.objects.Transaction;
+
+import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 public class Menu {
 
-    //------------------------------------------ strings and string lists for menu displays ----------------------------------
-    private String PAGE_ONE = "page one";
+    TransactionLog transactionLog = new TransactionLog();
+
+    //------------------------------------------ strings and string lists for menu displays -------------------------
+    private String TRANSACTION_LOG = "View Your Transaction Log";
     private String PAGE_TWO = "page two";
-    private String PAGE_THREE = "page three";
+    private String NEW_TP_LOG = "Add New Transaction/Monthly Payment";
     private String BACK_PAGE = "return to previous page";
     private String CLOSE_APPLICATION = "Exit Application";
-    private String[] mainMenuList = new String[]{PAGE_ONE, PAGE_TWO, PAGE_THREE, CLOSE_APPLICATION};
-    private String[] menuPageOneList = new String[]{PAGE_ONE, BACK_PAGE};
-    private String[] menuPageTwoList = new String[]{PAGE_ONE, BACK_PAGE};
-    private String[] menuPageThreeList = new String[]{PAGE_ONE, BACK_PAGE};
+
+    //------------------------------------- main menu selection numbers -------------------------------------------
+    private String MENU_TLOG = "1";
+    private String MENU_ADD_INCOME = "2";
+    private String MENU_ADD_TP = "3";
+    private String MENU_EXIT = "4";
+
+    //------------------------------------ Transaction Log w/ Editing Page 1 Menu -----------------------
+    private String EDIT_LOG = "Edit a Transaction";
+
+    //------------------------------------ New Transaction/Monthly Payment Page 3 Menu -----------------------
+    private String NEW_MONTHLY_PAYMENT = "Add a Monthly Payment";
+    private String NEW_TRANSACTION = "Add New Transaction/Monthly Payment";
+    //------------------------------------- transaction/monthly menu selection numbers ---------------------------
+    private String MENU_NEWTRANSACTION = "1";
+    private String MENU_NEWMONTHLYPAYMENT = "2";
+    private String MENU_GOBACK = "3";
+
+    //------------------------------- String list for For Loop Menus -----------------------------------------
+    private String[] mainMenuList = new String[]{TRANSACTION_LOG, PAGE_TWO, NEW_TP_LOG, CLOSE_APPLICATION};
+    private String[] menuPageOneList = new String[]{EDIT_LOG, BACK_PAGE};
+    private String[] menuPageTwoList = new String[]{TRANSACTION_LOG, BACK_PAGE};
+    private String[] menuPageThreeList = new String[]{NEW_TRANSACTION, NEW_MONTHLY_PAYMENT, BACK_PAGE};
 
     //--------------------------------- menu creation -------------------------------------
 
@@ -32,7 +58,7 @@ public class Menu {
     // --------------------------------- main menu method ----------------------------------
 
     //this method is for the main menu selection for the user
-    public void mainMenu() {
+    public void mainMenu(Map<Integer, Transaction> transactionMap) {
 
         //prints main menu display
         mainMenuDisplay();
@@ -46,25 +72,25 @@ public class Menu {
         //needs a while loop for breaks;
         while(!selection.isBlank()) {
 
-            if (selection.equals("1")) {
+            if (selection.equals(MENU_TLOG)) {
 
                 //user enters to menu selection 1
-                mainMenu_Page1(selection);
+                mainMenu_Page1(selection, transactionMap);
                 break;
             }
-            else if (selection.equals("2")) {
+            else if (selection.equals(MENU_ADD_INCOME)) {
 
                 //user enters to menu selection 2
                 mainMenu_Page2(selection);
                 break;
             }
-            else if (selection.equals("3")) {
+            else if (selection.equals(MENU_ADD_TP)) {
 
                 //user enters to menu selection 3
-                mainMenu_Page3(selection);
+                mainMenu_NewTransaction(selection, transactionMap);
                 break;
             }
-            else if (selection.equals("4")) {
+            else if (selection.equals(MENU_EXIT)) {
                 //user exits the menu and application
                 System.out.println("You are now exiting out of the application");
                 System.exit(0);
@@ -80,13 +106,15 @@ public class Menu {
     //------------------------------------ page menu methods ----------------------------------
 
     //first page of menu
-    public void mainMenu_Page1(String selection) {
+    public void mainMenu_Page1(String selection, Map<Integer, Transaction> transactionMap) {
 
         //the while loop keeps the user in page 1 menu
         while(selection.equals("1")) {
 
             //prints page 1 menu display
             page1MenuDisplay();
+
+            transactionLog.viewTransactionLog(transactionMap);
 
             //creates a menu for page 1 for the user to select from
             menu(menuPageOneList);
@@ -148,14 +176,14 @@ public class Menu {
         }
     }
 
-    //third page of menu
-    public void mainMenu_Page3(String selection) {
+    //creating new transaction and/or monthly payment
+    public void mainMenu_NewTransaction(String selection, Map<Integer, Transaction> transactionMap) {
 
         //the while loop keeps the user in page 3 menu
-        while(selection.equals("3")) {
+        while(selection.equals(MENU_ADD_TP)) {
 
             //prints page 3 menu display
-            page3MenuDisplay();
+            NewTransactionMenuDisplay();
 
             //creates a menu for page 3 for the user to select from
             menu(menuPageThreeList);
@@ -163,14 +191,31 @@ public class Menu {
             //gets the user input for menu selection
             String page3_Selection = userInput();
 
-            if (page3_Selection.equals("1")) {
+            if (page3_Selection.equals(MENU_NEWTRANSACTION)) {
 
-                //user enters menu selection 1
-                System.out.println("You are in menu page one");
+                //user enters menu selection 1 for new transaction
+                System.out.println("You are going to create a new transaction");
+
+                TransactionCreationMenu transactionCreationMenu = new TransactionCreationMenu();
+
+                if(transactionMap.isEmpty()) {
+                    transactionMap.put(1,transactionCreationMenu.newTransaction());
+                    successfulTransactionDisplay();
+                }
+                else {
+                    int i = transactionMap.size() + 1;
+                    transactionMap.put(i,transactionCreationMenu.newTransaction());
+                    successfulTransactionDisplay();
+                }
+
             }
-            else if (page3_Selection.equals("2")) {
+            else if (page3_Selection.equals(MENU_NEWMONTHLYPAYMENT)) {
+                //user enters menu selection 2 for new transaction
+                System.out.println("You are going to create a new monthly payment");
+            }
+            else if (page3_Selection.equals(MENU_GOBACK)) {
 
-                //user goes back to the main menu
+                //user enters menu selection 3 to go back to the main menu
                 System.out.println("You are returning to the main menu");
                 break;
             }
@@ -197,21 +242,15 @@ public class Menu {
 
     // -------------------------- Displays with sout methods -----------------------------------
 
-    public void mainMenuDisplay() {
-        System.out.println("Main Menu");
-    }
+    public void mainMenuDisplay() {System.out.println("Main Menu");}
 
-    public void page1MenuDisplay() {
-        System.out.println("Page One Menu");
-    }
+    public void page1MenuDisplay() {System.out.println("Transaction Log Menu");}
 
-    public void page2MenuDisplay() {
-        System.out.println("Page Two Menu");
-    }
+    public void page2MenuDisplay() {System.out.println("Page Two Menu");}
 
-    public void page3MenuDisplay() {
-        System.out.println("Page Three Menu");
-    }
+    public void NewTransactionMenuDisplay() {System.out.println("Create A New Transaction/Monthly Payment");}
+
+    public void successfulTransactionDisplay(){System.out.println("You have successfully created a new Transaction");}
 
 
 }
