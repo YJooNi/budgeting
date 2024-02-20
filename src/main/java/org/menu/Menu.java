@@ -3,11 +3,13 @@ package org.menu;
 import java.util.Scanner;
 
 public class Menu {
+
+    //------------------------------------------ strings and string lists for menu displays ----------------------------------
     private String PAGE_ONE = "page one";
     private String PAGE_TWO = "page two";
     private String PAGE_THREE = "page three";
-    private String CLOSE_APPLICATION = "Exit Application";
     private String BACK_PAGE = "return to previous page";
+    private String CLOSE_APPLICATION = "Exit Application";
     private String[] mainMenuList = new String[]{PAGE_ONE, PAGE_TWO, PAGE_THREE, CLOSE_APPLICATION};
     private String[] menuPageOneList = new String[]{PAGE_ONE, BACK_PAGE};
     private String[] menuPageTwoList = new String[]{PAGE_ONE, BACK_PAGE};
@@ -77,6 +79,7 @@ public class Menu {
 
     //------------------------------------ page menu methods ----------------------------------
 
+    //first page of menu
     public void mainMenu_Page1(String selection) {
 
         //the while loop keeps the user in page 1 menu
@@ -111,6 +114,7 @@ public class Menu {
         }
     }
 
+    //second page of menu
     public void mainMenu_Page2(String selection) {
 
         //the while loop keeps the user in page 2 menu
@@ -144,6 +148,7 @@ public class Menu {
         }
     }
 
+    //third page of menu
     public void mainMenu_Page3(String selection) {
 
         //the while loop keeps the user in page 3 menu
