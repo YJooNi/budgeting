@@ -2,7 +2,7 @@ package org.calculations;
 
 import java.math.BigDecimal;
 
-public class calculator {
+public class Calculator {
 
     public BigDecimal addition(BigDecimal a, BigDecimal b) {
         return a.add(b).setScale(2);

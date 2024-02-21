@@ -1,15 +1,18 @@
 package org.menu;
 
+import org.calculations.Calculator;
 import org.logs.TransactionLog;
 import org.objects.Transaction;
 
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.TreeMap;
 
 public class Menu {
 
+    //need for creating new objects to use their methods
     TransactionLog transactionLog = new TransactionLog();
+    Calculator calculator = new Calculator();
 
     //------------------------------------------ strings and string lists for menu displays -------------------------
     private String TRANSACTION_LOG = "View Your Transaction Log";
@@ -18,22 +21,33 @@ public class Menu {
     private String BACK_PAGE = "return to previous page";
     private String CLOSE_APPLICATION = "Exit Application";
 
-    //------------------------------------- main menu selection numbers -------------------------------------------
+    //------------------------------------- main menu selection numbers -----------------------------------------
     private String MENU_TLOG = "1";
     private String MENU_ADD_INCOME = "2";
     private String MENU_ADD_TP = "3";
     private String MENU_EXIT = "4";
 
-    //------------------------------------ Transaction Log w/ Editing Page 1 Menu -----------------------
+    //------------------------------------ Transaction Log w/ Editing Page 1 Menu -----------------------------
     private String EDIT_LOG = "Edit a Transaction";
 
-    //------------------------------------ New Transaction/Monthly Payment Page 3 Menu -----------------------
+    //------------------------------------- Transaction Log menu selection numbers -----------------------------
+    private String MENU_LOG_EDIT = "1";
+    private String MENU_GOBACK_PG1 = "2";
+
+    //------------------------------------ New Income/Money Allocation Page 2 Menu -----------------------------------------
+
+    //---------------------------- New Income/Money Allocation Menu Selection numbers --------------------------
+
+
+
+    //---------------------------------- New Transaction/Monthly Payment Page 3 Menu ----------------------------
     private String NEW_MONTHLY_PAYMENT = "Add a Monthly Payment";
-    private String NEW_TRANSACTION = "Add New Transaction/Monthly Payment";
+    private String NEW_TRANSACTION = "Add New Transaction";
+
     //------------------------------------- transaction/monthly menu selection numbers ---------------------------
     private String MENU_NEWTRANSACTION = "1";
     private String MENU_NEWMONTHLYPAYMENT = "2";
-    private String MENU_GOBACK = "3";
+    private String MENU_GOBACK_PG3 = "3";
 
     //------------------------------- String list for For Loop Menus -----------------------------------------
     private String[] mainMenuList = new String[]{TRANSACTION_LOG, PAGE_TWO, NEW_TP_LOG, CLOSE_APPLICATION};
@@ -75,7 +89,7 @@ public class Menu {
             if (selection.equals(MENU_TLOG)) {
 
                 //user enters to menu selection 1
-                mainMenu_Page1(selection, transactionMap);
+                mainMenu_TransactionLog(selection, transactionMap);
                 break;
             }
             else if (selection.equals(MENU_ADD_INCOME)) {
@@ -105,16 +119,29 @@ public class Menu {
 
     //------------------------------------ page menu methods ----------------------------------
 
-    //first page of menu
-    public void mainMenu_Page1(String selection, Map<Integer, Transaction> transactionMap) {
+    //user is able to view transactions and edit specific ones ------------- Page 1 --------------
+    public void mainMenu_TransactionLog(String selection, Map<Integer, Transaction> transactionMap) {
 
         //the while loop keeps the user in page 1 menu
-        while(selection.equals("1")) {
+        while(selection.equals(MENU_TLOG)) {
 
             //prints page 1 menu display
             page1MenuDisplay();
 
-            transactionLog.viewTransactionLog(transactionMap);
+            //if the map is not empty the transaction log will show along with total amount
+            if(!transactionMap.isEmpty()) {
+
+                //creates a log for transactions created
+                transactionLog.viewTransactionLog(transactionMap);
+
+                //displays total amount spent in total
+                totalAmountDisplay(transactionMap);
+            }
+            else {
+
+                //prints out a message if there is no current transaction in log
+                System.out.println("There is no current transaction made in log");
+            }
 
             //creates a menu for page 1 for the user to select from
             menu(menuPageOneList);
@@ -123,12 +150,12 @@ public class Menu {
             String page1_Selection = userInput();
 
             //the if statement checks to see if user selects one of the options
-            if (page1_Selection.equals("1")) {
+            if (page1_Selection.equals(MENU_LOG_EDIT)) {
 
                 //user enters menu selection 1
                 System.out.println("You are in menu page one");
             }
-            else if (page1_Selection.equals("2")) {
+            else if (page1_Selection.equals(MENU_GOBACK_PG1)) {
 
                 //user goes back to the main menu
                 System.out.println("You are going back to the main menu");
@@ -142,7 +169,7 @@ public class Menu {
         }
     }
 
-    //second page of menu
+    //second page of menu ------------ Page 2 ------------------
     public void mainMenu_Page2(String selection) {
 
         //the while loop keeps the user in page 2 menu
@@ -176,7 +203,7 @@ public class Menu {
         }
     }
 
-    //creating new transaction and/or monthly payment
+    //creating new transaction and/or monthly payment --------- PAGE 3 ----------
     public void mainMenu_NewTransaction(String selection, Map<Integer, Transaction> transactionMap) {
 
         //the while loop keeps the user in page 3 menu
@@ -196,16 +223,27 @@ public class Menu {
                 //user enters menu selection 1 for new transaction
                 System.out.println("You are going to create a new transaction");
 
+                //creates a new transaction object to store information
                 TransactionCreationMenu transactionCreationMenu = new TransactionCreationMenu();
 
+                //if the transaction map is empty, it will add a key to the first one
                 if(transactionMap.isEmpty()) {
+
+                    //starts a new transaction map at 1, if there was none
                     transactionMap.put(1,transactionCreationMenu.newTransaction());
+
+                    //shows a message to the user that the transaction has been made
                     successfulTransactionDisplay();
                 }
                 else {
+
+                    //if the map is not empty, it will add 1 to the key and add a new transaction to the map
                     int i = transactionMap.size() + 1;
                     transactionMap.put(i,transactionCreationMenu.newTransaction());
+
+                    //shows a message to the user that the transaction has been made
                     successfulTransactionDisplay();
+
                 }
 
             }
@@ -213,7 +251,7 @@ public class Menu {
                 //user enters menu selection 2 for new transaction
                 System.out.println("You are going to create a new monthly payment");
             }
-            else if (page3_Selection.equals(MENU_GOBACK)) {
+            else if (page3_Selection.equals(MENU_GOBACK_PG3)) {
 
                 //user enters menu selection 3 to go back to the main menu
                 System.out.println("You are returning to the main menu");
@@ -251,6 +289,23 @@ public class Menu {
     public void NewTransactionMenuDisplay() {System.out.println("Create A New Transaction/Monthly Payment");}
 
     public void successfulTransactionDisplay(){System.out.println("You have successfully created a new Transaction");}
+
+
+    //-------------------------------------- displays with calculation methods ---------------------------------
+
+    //this method is to add total amount from the transaction map
+    public void totalAmountDisplay(Map<Integer, Transaction> transactionMap){
+
+        BigDecimal totalAmount = BigDecimal.valueOf(0);
+
+        //this for loop gets all the prices and adds them together
+        for(Transaction transaction : transactionMap.values()) {
+            totalAmount = calculator.addition(totalAmount, transaction.getPrice());
+        }
+
+        System.out.println("Total Amount Spent: $" + totalAmount.setScale(2));
+
+    }
 
 
 }

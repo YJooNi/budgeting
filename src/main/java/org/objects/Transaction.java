@@ -13,15 +13,7 @@ public class Transaction {
 
     //---------------------------------- constructor ----------------------------------
 
-    public Transaction() {
-
-    }
-    public Transaction(String date, String description, BigDecimal price, String allocationTitle) {
-
-        this.date = date;
-        this.description = description;
-        this.price = price;
-        this.allocationTitle = allocationTitle;
+    public Transaction(){
 
     }
 

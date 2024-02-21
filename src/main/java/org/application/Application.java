@@ -7,7 +7,11 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Application {
+
+    //creates menus for the user
     Menu menu = new Menu();
+
+    //creates a map to hold all the transactions
     Map<Integer, Transaction> transactionMap = new TreeMap<>();
     public void run() {
 
