@@ -140,7 +140,7 @@ public class Menu {
             else {
 
                 //prints out a message if there is no current transaction in log
-                System.out.println("There is no current transaction made in log");
+                noTransactionLogDisplay();
             }
 
             //creates a menu for page 1 for the user to select from
@@ -152,8 +152,14 @@ public class Menu {
             //the if statement checks to see if user selects one of the options
             if (page1_Selection.equals(MENU_LOG_EDIT)) {
 
-                //user enters menu selection 1
-                System.out.println("You are in menu page one");
+                //if there is no transaction log, it will show the user an error message.
+                if(transactionMap.isEmpty()) {
+                    noEditingTransactionDisplay();
+                }
+                //if the transaction log isn't empty, they can edit the transaction
+                else {
+
+                }
             }
             else if (page1_Selection.equals(MENU_GOBACK_PG1)) {
 
@@ -289,6 +295,14 @@ public class Menu {
     public void NewTransactionMenuDisplay() {System.out.println("Create A New Transaction/Monthly Payment");}
 
     public void successfulTransactionDisplay(){System.out.println("You have successfully created a new Transaction");}
+
+    public void noEditingTransactionDisplay(){
+        System.out.println("There is no current transaction to edit");
+    }
+
+    public void noTransactionLogDisplay(){
+        System.out.println("There is no current transaction made in log");
+    }
 
 
     //-------------------------------------- displays with calculation methods ---------------------------------
