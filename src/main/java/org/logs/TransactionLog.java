@@ -14,7 +14,7 @@ public class TransactionLog {
                         "Date: " + transactionMap.get(i).getDate() +
                         " | Description: " + transactionMap.get(i).getDescription() +
                         " | Price: " + transactionMap.get(i).getPrice() +
-                        " | Allocation: " + transactionMap.get(i).getAllocationTitle());
+                        " | Expense Name: " + transactionMap.get(i).getExpenseTitle());
         }
     }
 }

@@ -1,7 +1,6 @@
 package org.menu;
 
 import org.objects.Transaction;
-import org.menu.Menu;
 
 import java.math.BigDecimal;
 
@@ -25,8 +24,8 @@ public class TransactionCreationMenu {
         transaction.setPrice(BigDecimal.valueOf(Double.parseDouble(new Menu().userInput())).setScale(2));
 
         //the user adds the allocation title and sets into the transaction object
-        System.out.println("Please enter an allocation title: ");
-        transaction.setAllocationTitle(new Menu().userInput());
+        System.out.println("Please enter an expense name: ");
+        transaction.setExpenseTitle(new Menu().userInput());
 
         return transaction;
     }

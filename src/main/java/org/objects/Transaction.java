@@ -1,15 +1,13 @@
 package org.objects;
 
 import java.math.BigDecimal;
-import java.util.Map;
-import java.util.TreeMap;
 
 public class Transaction {
 
     private String date;
     private String description;
     private BigDecimal price;
-    private String allocationTitle;
+    private String expenseTitle;
 
     //---------------------------------- constructor ----------------------------------
 
@@ -31,8 +29,8 @@ public class Transaction {
         return price;
     }
 
-    public String getAllocationTitle() {
-        return allocationTitle;
+    public String getExpenseTitle() {
+        return expenseTitle;
     }
 
     //--------------------------------- setters ----------------------------------------
@@ -49,8 +47,8 @@ public class Transaction {
         this.price = price;
     }
 
-    public void setAllocationTitle(String allocationTitle) {
-        this.allocationTitle = allocationTitle;
+    public void setExpenseTitle(String allocationTitle) {
+        this.expenseTitle = allocationTitle;
     }
 
 }
