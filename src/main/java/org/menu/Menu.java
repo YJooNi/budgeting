@@ -34,7 +34,7 @@ public class Menu {
     public final String MENU_LOG_EDIT = "1";
     public final String MENU_GOBACK_PG1 = "2";
 
-    //------------------------------------ New Income/Money Allocation Page 2 Menu -----------------------------------------
+    //------------------------------------ New Income/Money Allocation Page 2 Menu -------------------------------
 
     //---------------------------- New Income/Money Allocation Menu Selection numbers --------------------------
 
