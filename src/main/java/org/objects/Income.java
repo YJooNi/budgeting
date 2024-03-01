@@ -6,18 +6,19 @@ import java.math.BigDecimal;
 
 public class Income {
 
-    private BigDecimal incomeInformation;
+    private BigDecimal income;
 
     Calculator calculator = new Calculator();
 
-    public Income(String userInput) {
-        incomeInformation = BigDecimal.valueOf(Integer.parseInt(userInput)).setScale(2);
+    public Income(int income) {
+        this.income = BigDecimal.valueOf(income);
     }
 
-    public BigDecimal addIncome(BigDecimal a) {
-        return calculator.addition(incomeInformation, a);
+    public void addIncome(String s) {
+        this.income = income.add(BigDecimal.valueOf(Double.parseDouble(s)));
     }
 
-
-
+    public BigDecimal getIncome() {
+        return income;
+    }
 }

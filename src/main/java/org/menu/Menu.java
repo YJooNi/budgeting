@@ -2,6 +2,7 @@ package org.menu;
 
 import org.calculations.Calculator;
 import org.logs.TransactionLog;
+import org.objects.Income;
 import org.objects.Transaction;
 
 import java.math.BigDecimal;
@@ -69,10 +70,19 @@ public class Menu {
         System.out.println("Please select a number: ");
     }
 
+    // --------------------------------- income menu ---------------------------------------
+
+    public void enterIncome(Income income) {
+        addingTotalIncomeDisplay();
+        income.addIncome(userInput());
+    }
+
+
+
     // --------------------------------- main menu method ----------------------------------
 
     //this method is for the main menu selection for the user
-    public void mainMenu(Map<Integer, Transaction> transactionMap) {
+    public void mainMenu(Map<Integer, Transaction> transactionMap, Income income) {
 
         //prints main menu display
         mainMenuDisplay();
@@ -87,7 +97,7 @@ public class Menu {
             case MENU_TLOG ->
 
                 //user enters to menu selection 1
-                    mainMenu_TransactionLog(selection, transactionMap);
+                    mainMenu_TransactionLog(selection, transactionMap, income);
 
             case MENU_ADD_INCOME ->
 
@@ -116,7 +126,7 @@ public class Menu {
     //------------------------------------ page menu methods ----------------------------------
 
     //user is able to view transactions and edit specific ones ------------- Page 1 --------------
-    public void mainMenu_TransactionLog(String selection, Map<Integer, Transaction> transactionMap) {
+    public void mainMenu_TransactionLog(String selection, Map<Integer, Transaction> transactionMap, Income income) {
 
         outer_loop1:
 
@@ -134,12 +144,16 @@ public class Menu {
 
                     //displays total amount spent in total
                         totalAmountDisplay(transactionMap);
+
                 }
                 else {
 
                     //prints out a message if there is no current transaction in log
                         noTransactionLogDisplay();
                 }
+
+            //displays total income for the month
+            totalIncomeForMonthDisplay(income.getIncome());
 
             //creates a menu for page 1 for the user to select from
                 menu(menuPageOneList);
@@ -310,6 +324,10 @@ public class Menu {
         System.out.println("There is no current transaction made in log");
     }
 
+    public void addingTotalIncomeDisplay() {
+        System.out.print("Please enter your previous total income amount: $");
+    }
+
 
     //-------------------------------------- displays with calculation methods ---------------------------------
 
@@ -326,4 +344,9 @@ public class Menu {
             System.out.println("Total Amount Spent: $" + totalAmount);
 
     }
+
+    public void totalIncomeForMonthDisplay(BigDecimal n) {
+        System.out.println("Your total income since the beginning of this month is: $" + n);
+    }
+
 }
